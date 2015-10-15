@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scale xmlns:android="http://schemas.android.com/apk/res/android"
+	android:interpolator="@android:anim/decelerate_interpolator"
+	android:fromXScale="1.0"
+	android:toXScale="2.0"
+	android:fromYScale="1.0"
+	android:toYScale="2.0"
+	android:pivotX="50%"
+	android:pivotY="50%"
+	android:duration="500" />
+
+	<!-- android:fromXScale = "1.0" //fromXScale表示從什麼大小開始放大,1.0表示從原本圖的大小開始放大,
+	0.5則是初始值是原圖縮小一倍 -->	<!-- android:toXScale="2.0"  //toXScale表示放大到多大,2.0表示放大到原圖的2倍 -->

@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Yearbook</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--下載位置-->
+    <string name="URLDomain">http://130.211.249.249:8080/JCAP</string>
+    <string name="ZIPURL">http://130.211.249.249:8080/JCAP/Download?ID=</string>
+    <string name="api_url">http://130.211.249.249:8080/JCAP/Download?file=</string>
+    <!--GCM-->
+    <string name="Sender_Id">343514509468</string>
+</resources>
