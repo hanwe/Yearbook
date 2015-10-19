@@ -37,7 +37,6 @@ public class LoginAblumActivity extends Activity implements Animation.AnimationL
     {
         super.onCreate(savedInstanceState);
 
-
         setContentView(R.layout.activity_main);
 
         imgbu_add = (ImageButton) findViewById(R.id.album_imgbu_add);

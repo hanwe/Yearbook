@@ -2,9 +2,10 @@ package com.graduation.yearbook.PhotoPage;
 
 import android.graphics.Bitmap;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 
@@ -14,9 +15,9 @@ import java.util.ArrayList;
 public class PhotpViewAdapter extends PagerAdapter
 {
 
-    private ArrayList<ImageView> bitmapArray = new ArrayList<ImageView>();
+    private ArrayList<SimpleDraweeView> bitmapArray = new ArrayList<SimpleDraweeView>();
 
-    public PhotpViewAdapter( ArrayList<ImageView> bitmapArray)
+    public PhotpViewAdapter( ArrayList<SimpleDraweeView> bitmapArray)
     {
         this.bitmapArray = bitmapArray;
     }
@@ -25,6 +26,8 @@ public class PhotpViewAdapter extends PagerAdapter
     public Object instantiateItem(ViewGroup container, int position)
     {
         container.addView(bitmapArray.get(position % bitmapArray.size()));
+
+        Log.d("hanwe", "postion = " +  position);
         return bitmapArray.get(position % bitmapArray.size());
     }
 
@@ -37,7 +40,7 @@ public class PhotpViewAdapter extends PagerAdapter
     @Override
     public void destroyItem(ViewGroup container, int position, Object object)
     {
-        container.removeView(bitmapArray.get(position % bitmapArray.size()));
+        container.removeView((SimpleDraweeView)object);
     }
 
     @Override

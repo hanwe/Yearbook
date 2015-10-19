@@ -35,7 +35,6 @@ public class DownloadFileAsync extends AsyncTask<String, String, String>
     private static final int DOWNLOAD_ZIP = 1;
     private PhotoInfoResponse photoInfoResponse;
 
-
     public DownloadFileAsync(PhotoStart context, ProgressBar pro_download, Handler handler, PhotoInfoResponse photoInfoResponse)
     {
         m_Context = context;

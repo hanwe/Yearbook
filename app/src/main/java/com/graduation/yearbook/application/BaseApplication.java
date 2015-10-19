@@ -2,7 +2,11 @@ package com.graduation.yearbook.application;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
+
 import com.crashlytics.android.Crashlytics;
+import com.facebook.drawee.backends.pipeline.Fresco;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -10,9 +14,7 @@ import io.fabric.sdk.android.Fabric;
  */
 public class BaseApplication extends Application
 {
-    protected static String TAG = "";
     private static Context mContext;
-    public String strFileName = "";
 
     public static Context getContext()
     {
@@ -24,11 +26,12 @@ public class BaseApplication extends Application
         return ((BaseApplication) mContext);
     }
 
-
     @Override
     public void onCreate()
     {
         super.onCreate();
+
+        MultiDex.install(getBaseContext());
         Fabric.with(this, new Crashlytics());
 
         mContext = getApplicationContext();

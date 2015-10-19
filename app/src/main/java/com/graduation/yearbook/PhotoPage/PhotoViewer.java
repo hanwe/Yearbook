@@ -3,6 +3,10 @@ package com.graduation.yearbook.PhotoPage;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.PointF;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.view.ViewPager;
@@ -10,7 +14,17 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+
 import com.bumptech.glide.Glide;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.drawee.drawable.ScalingUtils;
+import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
+import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.facebook.imagepipeline.request.BasePostprocessor;
+import com.facebook.imagepipeline.request.ImageRequest;
+import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.facebook.imagepipeline.request.Postprocessor;
 import com.graduation.yearbook.R;
 
 import java.io.File;
@@ -21,7 +35,7 @@ import java.util.ArrayList;
  */
 public class PhotoViewer extends Activity implements GestureDetector.OnGestureListener, View.OnTouchListener
 {
-    private ArrayList<ImageView> bitmapArray = new ArrayList<ImageView>();
+    private ArrayList<SimpleDraweeView> bitmapArray = new ArrayList<>();
     private GestureDetector gestureDetector;
     private String strPath;
     private ViewPager viewpager;
@@ -32,6 +46,7 @@ public class PhotoViewer extends Activity implements GestureDetector.OnGestureLi
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Fresco.initialize(this);
 
         setContentView(R.layout.album_main_photoview_viewpage);
         viewpager = (ViewPager) findViewById(R.id.photo_viewpager);
@@ -49,8 +64,7 @@ public class PhotoViewer extends Activity implements GestureDetector.OnGestureLi
         File zipFile = new File(Environment.getExternalStorageDirectory() + "/Android/data/" + getApplicationContext().getPackageName() + "/Files/");
         File[] files = zipFile.listFiles();
 
-//        File DirDiPath = new File( Environment.getExternalStorageDirectory() + "/media");
-        if(files != null && files.length > 0)
+        if (files != null && files.length > 0)
         {
             strPath = Environment.getExternalStorageDirectory() + "/Android/data/" + getApplicationContext().getPackageName() + "/Files/" + files[0].getName() + "/";
 
@@ -60,21 +74,46 @@ public class PhotoViewer extends Activity implements GestureDetector.OnGestureLi
                 File fimage = new File(strPath, String.format(strIndexFormat, i + 1) + ".jpg");
 
                 //First
-                ImageView imageView_First = new ImageView(this);
-                Glide.with(this).load(fimage).into(imageView_First);
-                imageView_First.setScaleType(ImageView.ScaleType.FIT_XY);
+                SimpleDraweeView imageView_First = new SimpleDraweeView(this);
+                imageView_First.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FOCUS_CROP);
+                PointF focusPoint_First = new PointF();
+                focusPoint_First.x = 0f;
+                focusPoint_First.y = 0f;
+                imageView_First.getHierarchy().setActualImageFocusPoint(focusPoint_First);
+                DraweeController controller_First = Fresco.newDraweeControllerBuilder()
+                                                          .setUri(Uri.fromFile(fimage))
+                                                          .build();
+
+                imageView_First.setController(controller_First);
                 bitmapArray.add(imageView_First);
 
                 //Second
-                ImageView imageView_Second = new ImageView(this);
-                Glide.with(this).load(fimage).into(imageView_Second);
-                imageView_Second.setScaleType(ImageView.ScaleType.FIT_XY);
+                SimpleDraweeView imageView_Second = new SimpleDraweeView(this);
+                imageView_Second.getHierarchy().setActualImageScaleType(ScalingUtils.ScaleType.FOCUS_CROP);
+                PointF focusPoint_Second = new PointF();
+                focusPoint_Second.x = 1f;
+                focusPoint_Second.y = 1f;
+                imageView_Second.getHierarchy().setActualImageFocusPoint(focusPoint_Second);
+                DraweeController controller_Second = Fresco.newDraweeControllerBuilder()
+                                                           .setUri(Uri.fromFile(fimage))
+                                                           .build();
+                imageView_Second.setController(controller_Second);
                 bitmapArray.add(imageView_Second);
             }
         }
     }
 
-//    private void ReadPhotoFormFile()
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        viewpager.setAdapter(null);
+        bitmapArray.clear();
+        System.gc();
+    }
+
+    //    private void ReadPhotoFormFile()
 //    {
 //        bitmapArray.clear();
 //
@@ -138,29 +177,6 @@ public class PhotoViewer extends Activity implements GestureDetector.OnGestureLi
     protected void onStart()
     {
         super.onStart();
-
-//        view_photo.getInAnimation().setAnimationListener(new Animation.AnimationListener()
-//        {
-//            public void onAnimationStart(Animation animation)
-//            {
-//                JLog.d("目前page =" + view_photo.getDisplayedChild());
-//                JLog.d("ViewFilpper  Start");
-//
-////                setViewDynamic(view_photo);
-//            }
-//
-//            public void onAnimationRepeat(Animation animation)
-//            {
-//                JLog.d("目前page =" + view_photo.getDisplayedChild());
-//                JLog.d("ViewFilpper  Repeat");
-//            }
-//
-//            public void onAnimationEnd(Animation animation)
-//            {
-//                JLog.d("目前page =" + view_photo.getDisplayedChild());
-//                JLog.d("ViewFilpper  End");
-//            }
-//        });
     }
 
 //    private void setViewDynamic(ViewFlipper viewFlipper)
@@ -195,9 +211,7 @@ public class PhotoViewer extends Activity implements GestureDetector.OnGestureLi
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
-//        view_photo.stopFlipping();             // 点击事件后，停止自动播放
-//        view_photo.setAutoStart(false);
-        return gestureDetector.onTouchEvent(event);         // 注册手势事件
+        return gestureDetector.onTouchEvent(event);
     }
 
     @Override
@@ -234,41 +248,6 @@ public class PhotoViewer extends Activity implements GestureDetector.OnGestureLi
     @Override
     public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY)
     {
-//        view_photo.setAutoStart(true);         // 设置自动播放功能（点击事件，前自动播放）
-//
-//        view_photo.setFlipInterval(3000);
-//        if (view_photo.isAutoStart() && !view_photo.isFlipping())
-//        {
-//            view_photo.startFlipping();
-//        }
-//
-//
-//        if (e2.getX() - e1.getX() > 120)
-//        {            // 从左向右滑动（左进右出）
-//            Animation rInAnim = AnimationUtils.loadAnimation(PhotoViewer.this, R.anim.push_right_in);  // 向右滑动左侧进入的渐变效果（alpha  0.1 -> 1.0）
-//            Animation rOutAnim = AnimationUtils.loadAnimation(PhotoViewer.this, R.anim.push_right_out); // 向右滑动右侧滑出的渐变效果（alpha 1.0  -> 0.1）
-//
-//            view_photo.setInAnimation(rInAnim);
-//            view_photo.setOutAnimation(rOutAnim);
-//
-//            JLog.d("目前page =" + view_photo.getDisplayedChild());
-//            view_photo.showPrevious();
-//            return true;
-//        }
-//        else if (e2.getX() - e1.getX() < -120)
-//        {        // 从右向左滑动（右进左出）
-//            Animation lInAnim = AnimationUtils.loadAnimation(PhotoViewer.this, R.anim.push_left_in);       // 向左滑动左侧进入的渐变效果（alpha 0.1  -> 1.0）
-//            Animation lOutAnim = AnimationUtils.loadAnimation(PhotoViewer.this, R.anim.push_left_out);     // 向左滑动右侧滑出的渐变效果（alpha 1.0  -> 0.1）
-//
-//            view_photo.setInAnimation(lInAnim);
-//            view_photo.setOutAnimation(lOutAnim);
-//
-//            JLog.d("目前page =" + view_photo.getDisplayedChild());
-//            view_photo.showNext();
-//            return true;
-//        }
-
-
         return true;
     }
 

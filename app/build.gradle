@@ -43,9 +43,9 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.5.2@aar') {
         transitive = true;
     }
-    compile files('libs/bugsense-3.6.1.jar')
     compile 'com.android.support:appcompat-v7:23.0.1'
     compile 'com.android.support:support-v4:23.0.1'
     compile 'com.squareup.okhttp:okhttp:2.0.0'
-    compile "com.google.android.gms:play-services:8.1.0"
+    compile 'com.google.android.gms:play-services:8.1.0'
+    compile 'com.facebook.fresco:fresco:0.7.0'
 }
