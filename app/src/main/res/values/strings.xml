@@ -9,4 +9,5 @@
     <string name="api_url">http://130.211.249.249:8080/JCAP/Download?file=</string>
     <!--GCM-->
     <string name="Sender_Id">343514509468</string>
+
 </resources>

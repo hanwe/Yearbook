@@ -11,7 +11,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.widget.FrameLayout;
 
-import com.graduation.yearbook.Compoment.CameraPreview;
+import com.graduation.yearbook.Compoment.view.CameraPreview;
 import com.graduation.yearbook.PhotoPage.PhotoStart;
 
 import net.sourceforge.zbar.Config;

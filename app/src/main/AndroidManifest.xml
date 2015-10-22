@@ -68,6 +68,8 @@
             </intent-filter>
         </service>
 
+        <service android:name=".Compoment.service.FunctionService"></service>
+
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="f668f80c0ff11376abc1fbeaee4f437faba30b30"/>

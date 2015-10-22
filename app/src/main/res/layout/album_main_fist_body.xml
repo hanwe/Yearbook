@@ -3,6 +3,12 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent">
 
+
+	<ImageView
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/imageView"/>
+
 	<ProgressBar
 		style="?android:attr/progressBarStyleHorizontal"
 		android:id="@+id/album_firstin_probar"
@@ -21,4 +27,5 @@
 		android:layout_centerHorizontal="true"
 		android:layout_gravity="bottom"
 		android:text="請等待下載" />
+
 </RelativeLayout>

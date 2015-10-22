@@ -1,11 +1,12 @@
 package com.graduation.yearbook.PhotoPage;
 
-import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.Message;
 import android.view.View;
 import android.widget.Button;
@@ -15,7 +16,10 @@ import com.graduation.yearbook.DownloadFileAsync;
 import com.graduation.yearbook.Http.Gson.Request.DeviceInfo;
 import com.graduation.yearbook.Http.Gson.Response.PhotoInfoResponse;
 import com.graduation.yearbook.Http.HttpProvider.HttpProvider;
+import com.graduation.yearbook.Interface.serviceBinderInterface;
 import com.graduation.yearbook.R;
+import com.graduation.yearbook.base.BaseActivity;
+import com.graduation.yearbook.manager.ServiceManager;
 import com.graduation.yearbook.util.ui.DeviceUtil;
 
 import java.io.File;
@@ -30,7 +34,7 @@ import retrofit.mime.TypedByteArray;
 /**
  * Created by hanwe on 2015/4/19.
  */
-public class PhotoStart extends Activity
+public class PhotoStart extends BaseActivity
 {
     private ProgressBar pro_download;
     private Button bu_Enter;
@@ -96,14 +100,27 @@ public class PhotoStart extends Activity
         intent = this.getIntent();
         AlbumID = intent.getStringExtra("ScanInfo");
 
+        getOpenImage();
         getPhotoInfo();
 
+    }
+
+
+    public void getOpenImage()
+    {
     }
 
     public void getPhotoInfo()
     {
         thread = new Thread(runnable);
         thread.start();
+    }
+
+    @Override
+    protected void receiverData(Intent intent)
+    {
+        super.receiverData(intent);
+        //接收廣播
     }
 
     private void setDownload(PhotoInfoResponse photoInfoResponse)
@@ -117,10 +134,7 @@ public class PhotoStart extends Activity
                                         photoInfoResponse.AlbumInfo.Version + "&File=" +
                                         photoInfoResponse.AlbumInfo.ZIPCnt);
 //                m_DownloadFileAsync.execute("http://130.211.249.249:8080/JCAP/Download?ID=WFjlnIvlsI82MDE%3D&Version=20150801123000&File=1");
-
         }
-
-
     }
 
     public static void UnZipFolder(String zipFileString, String outPathString) throws Exception

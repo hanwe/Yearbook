@@ -3,7 +3,7 @@
  * 
  * Created by lisah0 on 2012-02-24
  */
-package com.graduation.yearbook.Compoment;
+package com.graduation.yearbook.Compoment.view;
 
 import android.content.Context;
 import android.hardware.Camera;

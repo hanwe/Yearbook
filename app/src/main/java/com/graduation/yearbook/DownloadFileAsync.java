@@ -81,13 +81,11 @@ public class DownloadFileAsync extends AsyncTask<String, String, String>
                 // publishing the progress....
                 // After this onProgressUpdate will be called
                 publishProgress("" + (int) ((total * 100) / lenghtOfFile));
-//                m_ProgressBar.setProgress((int) (total * 100 / lenghtOfFile));
-//                publishProgress((total * 100 / lenghtOfFile));
+
                 // writing data to file
                 output.write(data, 0, count);
             }
 
-            // flushing output
             output.flush();
 
             // closing streams
